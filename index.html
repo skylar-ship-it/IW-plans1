@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implanted Wisdom — Strategy Documents</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fa;color:#1a1a1a;min-height:100vh}
+.page{max-width:900px;margin:0 auto;padding:32px 20px}
+.top-bar{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #dde3ed}
+.logo{background:#185FA5;color:#fff;font-size:13px;font-weight:600;letter-spacing:.06em;padding:6px 12px;border-radius:6px}
+.top-title{font-size:16px;font-weight:500;color:#1a1a1a}
+.top-sub{font-size:12px;color:#6b7280;margin-top:2px}
+.tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:9px 18px;border-radius:8px;border:1px solid #d1d9e6;background:#fff;color:#6b7280;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;display:flex;align-items:center;gap:7px}
+.tab:hover{border-color:#185FA5;color:#185FA5}
+.tab.active{background:#E6F1FB;border-color:#185FA5;color:#0C447C}
+.tab svg{width:15px;height:15px;flex-shrink:0}
+.panel{display:none}
+.panel.active{display:block}
+.doc-title{font-size:22px;font-weight:600;color:#042C53;margin-bottom:4px}
+.doc-sub{font-size:14px;color:#6b7280;margin-bottom:22px}
+.callout{background:#E6F1FB;border-left:4px solid #185FA5;padding:14px 18px;margin-bottom:24px;border-radius:0 8px 8px 0}
+.callout p{font-size:14px;color:#0C447C;line-height:1.65}
+.callout strong{color:#042C53}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#185FA5;margin:28px 0 12px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px}
+.card{background:#fff;border:1px solid #dde3ed;border-radius:12px;padding:16px;cursor:default;transition:border-color .15s}
+.card:hover{border-color:#185FA5}
+.card-icon{font-size:24px;margin-bottom:8px}
+.card-title{font-size:14px;font-weight:600;color:#0C447C;margin-bottom:4px}
+.card-desc{font-size:12px;color:#4b6891;line-height:1.5}
+.flow-row{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.flow-box{background:#fff;border:1px solid #dde3ed;border-radius:10px;padding:12px 16px;flex:1;min-width:140px}
+.flow-box .fb-label{font-size:10px;font-weight:600;color:#378ADD;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.flow-box .fb-title{font-size:15px;font-weight:600;color:#042C53;margin-bottom:3px}
+.flow-box .fb-sub{font-size:12px;color:#6b7280;line-height:1.4}
+.arrow{color:#378ADD;font-size:20px;display:flex;align-items:center;flex-shrink:0}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.stat{background:#fff;border:1px solid #dde3ed;border-radius:10px;padding:14px}
+.stat-label{font-size:11px;color:#6b7280;margin-bottom:5px}
+.stat-val{font-size:24px;font-weight:600;color:#0C447C}
+.stat-note{font-size:11px;color:#9ca3af;margin-top:3px}
+.ws-block{border:1px solid #dde3ed;border-radius:12px;overflow:hidden;margin-bottom:18px}
+.ws-header{background:#185FA5;padding:14px 18px;display:flex;align-items:center;gap:12px}
+.ws-num{width:28px;height:28px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#0C447C;flex-shrink:0}
+.ws-name{font-size:15px;font-weight:600;color:#fff}
+.ws-owner{font-size:12px;color:#B5D4F4;margin-left:auto;white-space:nowrap}
+.ws-phases{display:grid;grid-template-columns:repeat(3,1fr)}
+@media(max-width:600px){.ws-phases{grid-template-columns:1fr}}
+.ws-phase{padding:14px 16px;border-right:1px solid #dde3ed;background:#fff}
+.ws-phase:last-child{border-right:none}
+.wp-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#378ADD;margin-bottom:8px}
+.wp-items{list-style:none}
+.wp-items li{font-size:12px;color:#4b5563;padding:3px 0 3px 14px;position:relative;line-height:1.45}
+.wp-items li::before{content:"—";position:absolute;left:0;color:#B5D4F4}
+.done-badge{background:#f0f6ff;border-top:1px solid #dde3ed;padding:10px 16px;font-size:13px;color:#0C447C}
+.done-badge strong{color:#042C53}
+.branch{border:1px solid #dde3ed;border-radius:12px;overflow:hidden;margin-bottom:14px}
+.branch-header{background:#E6F1FB;padding:12px 16px;border-bottom:1px solid #dde3ed}
+.bh-title{font-size:14px;font-weight:600;color:#0C447C;display:flex;align-items:center;gap:8px}
+.bh-parade{font-size:12px;color:#185FA5;margin-top:4px;font-style:italic;line-height:1.4}
+.branch-body{padding:14px 16px;background:#fff}
+.branch-body ul{list-style:none}
+.branch-body ul li{font-size:13px;color:#4b5563;padding:4px 0 4px 18px;position:relative;line-height:1.5}
+.branch-body ul li::before{content:"→";position:absolute;left:0;color:#378ADD;font-size:12px;top:5px}
+.success-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.success-table th{text-align:left;padding:10px 12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#185FA5;border-bottom:1px solid #dde3ed;background:#f8faff}
+.success-table td{padding:10px 12px;border-bottom:1px solid #f0f4f9;color:#4b5563;vertical-align:top}
+.success-table tr:last-child td{border-bottom:none}
+.odds-high{color:#0C447C;font-weight:600}
+.odds-med{color:#378ADD;font-weight:500}
+.next-step{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid #f0f4f9}
+.next-step:last-child{border-bottom:none}
+.ns-num{width:26px;height:26px;border-radius:50%;background:#185FA5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px}
+.ns-title{font-size:14px;font-weight:600;color:#0C447C;margin-bottom:3px}
+.ns-desc{font-size:13px;color:#6b7280;line-height:1.5}
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid #dde3ed;text-align:center;font-size:12px;color:#9ca3af}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar">
+    <div class="logo">IW</div>
+    <div>
+      <div class="top-title">Implanted Wisdom — Strategy Documents</div>
+      <div class="top-sub">Confidential · Internal Use Only</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="show(0)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      WMOS proposal
+    </button>
+    <button class="tab" onclick="show(1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      OMS360 outline
+    </button>
+    <button class="tab" onclick="show(2)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+      90-day plan
+    </button>
+    <button class="tab" onclick="show(3)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Pre-parade
+    </button>
+  </div>
+
+  <!-- PANEL 0: WMOS -->
+  <div id="p0" class="panel active">
+    <div class="doc-title">West Michigan Oral Surgery — partnership proposal</div>
+    <div class="doc-sub">What IW installs, what it costs, and how risk is shared</div>
+    <div class="callout"><p><strong>The deal in one sentence:</strong> IW builds the entire full-arch system inside WMOS — and you only pay the big balance <em>after</em> seeing real results.</p></div>
+
+    <div class="section-label">What gets installed — 4 pillars</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🦷</div><div class="card-title">Clinical training</div><div class="card-desc">All-on-X + FP1 protocols, digital planning, surgical mentorship — builds prosthetic confidence across all surgeons</div></div>
+      <div class="card"><div class="card-icon">💻</div><div class="card-title">Digital workflow</div><div class="card-desc">Scanning, photogrammetry, planning, printing SOPs — removes guesswork, reduces chair-time</div></div>
+      <div class="card"><div class="card-icon">📣</div><div class="card-title">Patient acquisition</div><div class="card-desc">Ads, CRM, lead nurture, outbound call management, KPI tracking — supports the clinical engine</div></div>
+      <div class="card"><div class="card-icon">🤝</div><div class="card-title">Referral ecosystem</div><div class="card-desc">All On Everyday — GP–specialist program so referrals and direct volume rise together</div></div>
+    </div>
+
+    <div class="section-label">How you pay — proof before full payment</div>
+    <div class="flow-row">
+      <div class="flow-box"><div class="fb-label">Phase 1 · upfront</div><div class="fb-title">~$125,000</div><div class="fb-sub">CRM, funnel, ads setup, SOPs, onboarding, workflow integration</div></div>
+      <div class="arrow">→</div>
+      <div class="flow-box"><div class="fb-label">Phase 2 · after results</div><div class="fb-title">~$125,000</div><div class="fb-sub">Unlocks only after 20–30 completed arches — you prove value first</div></div>
+      <div class="arrow">→</div>
+      <div class="flow-box"><div class="fb-label">Ongoing · monthly</div><div class="fb-title">~$3,500/mo</div><div class="fb-sub">Starts after 30 arches — support, CRM, KPI tracking</div></div>
+      <div class="arrow">→</div>
+      <div class="flow-box"><div class="fb-label">Usage · back-loaded</div><div class="fb-title">$500/arch</div><div class="fb-sub">Only after 75 arches — aligned to volume, intentionally back-loaded</div></div>
+    </div>
+    <div class="callout" style="margin-bottom:24px"><p>Ads managed at 15% of spend (~$5–10k/mo recommended). 85% goes to working media.</p></div>
+
+    <div class="section-label">The money opportunity (illustrative)</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Arches per year</div><div class="stat-val">~100</div><div class="stat-note">Tracked from day 1</div></div>
+      <div class="stat"><div class="stat-label">Revenue per arch</div><div class="stat-val">$23,500</div><div class="stat-note">Average price</div></div>
+      <div class="stat"><div class="stat-label">Gross revenue</div><div class="stat-val">~$2.35M</div><div class="stat-note">Incremental</div></div>
+      <div class="stat"><div class="stat-label">EBITDA (~50% OH)</div><div class="stat-val">~$1.18M</div><div class="stat-note">Yours to verify — not ours to claim</div></div>
+    </div>
+
+    <div class="section-label">Timeline</div>
+    <div class="flow-row">
+      <div class="flow-box"><div class="fb-label">Weeks 1–4</div><div class="fb-title">Foundation</div><div class="fb-sub">Build CRM, funnel, SOPs, team kickoff</div></div>
+      <div class="arrow">→</div>
+      <div class="flow-box"><div class="fb-label">Weeks 5–8</div><div class="fb-title">Go-live</div><div class="fb-sub">Ads on, training done, KPI tracking live</div></div>
+      <div class="arrow">→</div>
+      <div class="flow-box"><div class="fb-label">Weeks 9–12</div><div class="fb-title">Ramp</div><div class="fb-sub">First arch cohort, referral program activated</div></div>
+      <div class="arrow">→</div>
+      <div class="flow-box"><div class="fb-label">Ongoing</div><div class="fb-title">Optimize</div><div class="fb-sub">Monthly reviews against your baseline</div></div>
+    </div>
+  </div>
+
+  <!-- PANEL 1: OMS360 -->
+  <div id="p1" class="panel">
+    <div class="doc-title">OMS360 implant committee — capabilities overview</div>
+    <div class="doc-sub">A pre-pitch summary of what IW delivers and how it fits the OMS360 network</div>
+    <div class="callout"><p><strong>The big idea:</strong> Full-arch is the highest-value procedure in oral surgery — and the hardest to scale. IW turns it into a plug-in module that OMS360 can install across every practice.</p></div>
+
+    <div class="section-label">Why this fits OMS360 — 4 reasons</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🏗️</div><div class="card-title">Mirrors your thesis</div><div class="card-desc">De-risks surgeon investment, accelerates growth, and simplifies operations — exactly what OMS360 does</div></div>
+      <div class="card"><div class="card-icon">🔌</div><div class="card-title">Plug-in module</div><div class="card-desc">Standardized once, scaled across all practices and embedded into future acquisitions</div></div>
+      <div class="card"><div class="card-icon">🛡️</div><div class="card-title">Protects referrals</div><div class="card-desc">Strengthens GP–specialist relationships instead of cannibalizing them</div></div>
+      <div class="card"><div class="card-icon">🩺</div><div class="card-title">Surgeon-led</div><div class="card-desc">Built by Dr. Pulver — not an outside marketing agency repackaging ad spend</div></div>
+    </div>
+
+    <div class="section-label">4 capability areas at the network level</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🎓</div><div class="card-title">Clinical training</div><div class="card-desc">Consistent protocols and mentorship across all surgeons and sites</div></div>
+      <div class="card"><div class="card-icon">🖥️</div><div class="card-title">Digital workflow</div><div class="card-desc">Repeatable SOPs — less chair-time, less variability network-wide</div></div>
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">Patient acquisition</div><div class="card-desc">CRM + demand gen that integrates with existing marketing — no duplication</div></div>
+      <div class="card"><div class="card-icon">🌐</div><div class="card-title">Referral ecosystem</div><div class="card-desc">GP–specialist systems modernized and preserved across the network</div></div>
+    </div>
+
+    <div class="section-label">Illustrative economics — per practice</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Arches/year</div><div class="stat-val">~100</div></div>
+      <div class="stat"><div class="stat-label">Revenue/arch</div><div class="stat-val">$23,500</div></div>
+      <div class="stat"><div class="stat-label">Gross revenue</div><div class="stat-val">~$2.35M</div></div>
+      <div class="stat"><div class="stat-label">EBITDA per practice</div><div class="stat-val">~$1.18M</div><div class="stat-note">Across the network → 8-figure potential</div></div>
+    </div>
+
+    <div class="section-label">Path forward — 4 steps</div>
+    <div style="background:#fff;border:1px solid #dde3ed;border-radius:12px;padding:4px 16px">
+      <div class="next-step"><div class="ns-num">1</div><div><div class="ns-title">Committee review</div><div class="ns-desc">Feedback on fit and priorities from this outline</div></div></div>
+      <div class="next-step"><div class="ns-num">2</div><div><div class="ns-title">Formal presentation</div><div class="ns-desc">Real attributable performance data from both proof sites — results, not projections</div></div></div>
+      <div class="next-step"><div class="ns-num">3</div><div><div class="ns-title">Confidentiality framework</div><div class="ns-desc">NDA in place before detailed protocol and operational discussion</div></div></div>
+      <div class="next-step"><div class="ns-num">4</div><div><div class="ns-title">Structured pilot</div><div class="ns-desc">2–3 OMS360 practices, defined KPIs, clear network-rollout decision gate</div></div></div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: 90-DAY -->
+  <div id="p2" class="panel">
+    <div class="doc-title">90-day mitigation action plan</div>
+    <div class="doc-sub">Three fixes, three workstreams — May through August 2026</div>
+    <div class="callout"><p><strong>Next 14 days gate everything else:</strong> Ship the WMOS proposal (correctly priced, attribution tracking built in) and the OMS360 committee outline (outcomes-led, IP protected) before anything else moves.</p></div>
+
+    <div class="ws-block">
+      <div class="ws-header">
+        <div class="ws-num">1</div>
+        <div class="ws-name">Decouple from the founder</div>
+        <div class="ws-owner">Owner: Dr. Pulver + Ops</div>
+      </div>
+      <div class="ws-phases">
+        <div class="ws-phase"><div class="wp-label">Days 1–30 · Capture</div><ul class="wp-items"><li>Document SOPs into "IW Core System v1"</li><li>Define credential bar for delivering surgeons</li><li>Use WMOS launch as live documentation exercise</li></ul></div>
+        <div class="ws-phase"><div class="wp-label">Days 31–60 · Test transfer</div><ul class="wp-items"><li>Run WMOS strictly from the documented system</li><li>Identify first external surgeon-mentor candidate</li><li>Build train-the-trainer module from SOPs</li></ul></div>
+        <div class="ws-phase"><div class="wp-label">Days 61–90 · Validate</div><ul class="wp-items"><li>WMOS team executes without Pulver on every call</li><li>Lock Core System v1.0</li><li>Second-surgeon-led delivery dry run</li></ul></div>
+      </div>
+      <div class="done-badge"><strong>Done when:</strong> A documented system a second surgeon can deliver, validated on a real external launch</div>
+    </div>
+
+    <div class="ws-block">
+      <div class="ws-header">
+        <div class="ws-num">2</div>
+        <div class="ws-name">Fix the cash &amp; attribution math</div>
+        <div class="ws-owner">Owner: Founder + Finance</div>
+      </div>
+      <div class="ws-phases">
+        <div class="ws-phase"><div class="wp-label">Days 1–30 · Model</div><ul class="wp-items"><li>Build unit-economics + working-capital model</li><li>Spec attribution dashboard</li><li>Set defensible ramp + Phase-2 thresholds</li></ul></div>
+        <div class="ws-phase"><div class="wp-label">Days 31–60 · Propose &amp; fund</div><ul class="wp-items"><li>Deliver WMOS proposal with corrected deferred terms</li><li>Capture WMOS baseline before go-live</li><li>Reserve working capital for concurrent launches</li></ul></div>
+        <div class="ws-phase"><div class="wp-label">Days 61–90 · Prove</div><ul class="wp-items"><li>First 30/60-day attribution readout from WMOS</li><li>Reconcile against the model</li><li>Turn into clean ROI one-pager for OMS360</li></ul></div>
+      </div>
+      <div class="done-badge"><strong>Done when:</strong> WMOS proposal signed, live attribution tracking, funded and validated cash model</div>
+    </div>
+
+    <div class="ws-block">
+      <div class="ws-header">
+        <div class="ws-num">3</div>
+        <div class="ws-name">Protect the IP &amp; sell to the buyer (OMS360)</div>
+        <div class="ws-owner">Owner: Founder / BD + Legal</div>
+      </div>
+      <div class="ws-phases">
+        <div class="ws-phase"><div class="wp-label">Days 1–30 · Frame &amp; protect</div><ul class="wp-items"><li>Draft OMS360 outline — outcomes only, no SOP disclosure</li><li>Put mutual NDA + IP framework in place</li><li>Map committee, economic buyer, surgeon champions</li></ul></div>
+        <div class="ws-phase"><div class="wp-label">Days 31–60 · Advance</div><ul class="wp-items"><li>Deliver outline; pre-wire surgeon champions</li><li>Build formal pitch on Pulver + early WMOS proof</li><li>Design pilot to ride on OMS360's existing stack</li></ul></div>
+        <div class="ws-phase"><div class="wp-label">Days 61–90 · Close</div><ul class="wp-items"><li>Deliver formal pitch</li><li>Negotiate — contract before teaching</li><li>Target signed pilot LOI with defined KPIs</li></ul></div>
+      </div>
+      <div class="done-badge"><strong>Done when:</strong> Outline delivered, formal pitch completed, pilot LOI in hand — IP intact throughout</div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: PRE-PARADE -->
+  <div id="p3" class="panel">
+    <div class="doc-title">Pre-parade — the best-case scenario</div>
+    <div class="doc-sub">It's 2028. IW won. What had to go right to get there?</div>
+    <div class="callout"><p><strong>The one thing that went right:</strong> We turned the surgeon into a system. Once results stopped depending on Dr. Pulver personally, every other win became possible — WMOS, OMS360, and a category no agency could touch.</p></div>
+
+    <div class="section-label">5 branches — what winning looks like</div>
+
+    <div class="branch">
+      <div class="branch-header"><div class="bh-title">🏗️ 1 · IW — the platform</div><div class="bh-parade">Premium infrastructure, not a marketing line item — productized, high-margin, impossible to rip out</div></div>
+      <div class="branch-body"><ul>
+        <li>Relentless "implementation infrastructure" positioning kept IW out of the lead-gen price war</li>
+        <li>One documented core system, configured per practice — real operating leverage, widening margins</li>
+        <li>Workflow integration made IW infrastructure practices depended on — high renewal rates</li>
+        <li>Pulver's time went into IP and credibility, not every implementation call</li>
+      </ul></div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-header"><div class="bh-title">🔬 2 · Pulver Oral Surgery — the flagship</div><div class="bh-parade">Pulver stopped being the bottleneck and became the credible R&amp;D lab the whole story rests on</div></div>
+      <div class="branch-body"><ul>
+        <li>System-attributable metrics replaced "Pulver's lifetime numbers" — survived buyer scrutiny</li>
+        <li>Second and third surgeon hit the same outcomes — killed the "only works with Pulver" objection</li>
+        <li>Pulver's reputation pulled in surgeon-mentors, deepening the delivery bench</li>
+      </ul></div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-header"><div class="bh-title">✅ 3 · West Michigan Oral Surgery — the proof of transfer</div><div class="bh-parade">The early partner became the reference account that sold everyone else</div></div>
+      <div class="branch-body"><ul>
+        <li>A different multi-surgeon group in Grand Rapids ran the IW system and produced — the single most persuasive fact in every later pitch</li>
+        <li>Direct and referral volume rose together — no cannibalization</li>
+        <li>Conservative arch targets meant Phase-2 triggered on schedule, relationship stayed strong</li>
+        <li>Every prospect — including OMS360 — called WMOS before signing</li>
+      </ul></div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-header"><div class="bh-title">🏥 4 · OMS360 — the enterprise anchor</div><div class="bh-parade">The committee said yes for the right reasons — proof, not promises — and the pilot became the rollout template</div></div>
+      <div class="branch-body"><ul>
+        <li>Led with attributable EBITDA evidence — exactly what a PE-backed group needs to act</li>
+        <li>Contracted before teaching — "build it ourselves" never became the cheaper option</li>
+        <li>Addressed the committee and corporate economic buyer, with surgeons as champions</li>
+        <li>Pilot rode on OMS360's existing stack — no rebuild required</li>
+        <li>2–3 practice pilot hit KPIs → full network rollout → template other DSOs asked for by name</li>
+      </ul></div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-header"><div class="bh-title">📈 5 · Overall growth</div><div class="bh-parade">IW scaled without breaking — delivery, capital, and bench built ahead of the demand curve</div></div>
+      <div class="branch-body"><ul>
+        <li>Credentialed surgeon-mentor pipeline — growth never capped by the founder</li>
+        <li>Sales gated to delivery capacity — churn stayed low, references compounded</li>
+        <li>Working capital sized to the deferred structure — growth never choked on cash</li>
+        <li>Mix of independents and DSOs removed single-customer risk</li>
+        <li>"IW" became shorthand for full-arch implementation infrastructure — the default, not an option</li>
+      </ul></div>
+    </div>
+
+    <div class="section-label">Success register — what to press on now</div>
+    <table class="success-table">
+      <thead><tr><th>Driver</th><th>Odds</th><th>Upside</th><th>Earliest signal</th></tr></thead>
+      <tbody>
+        <tr><td>WMOS reproduces Pulver outcomes</td><td class="odds-high">High</td><td>Category lead</td><td>First arch cohort on schedule</td></tr>
+        <tr><td>WMOS becomes the reference account</td><td class="odds-high">High</td><td>Sales accelerant</td><td>Prospects citing WMOS results</td></tr>
+        <tr><td>OMS360 committee approves a pilot</td><td class="odds-med">Medium</td><td>Scale step-change</td><td>Outline advances to formal pitch</td></tr>
+        <tr><td>Premium "infrastructure" category holds</td><td class="odds-med">Med–High</td><td>Pricing power</td><td>Renewals at full price</td></tr>
+        <tr><td>Mentor bench scales delivery</td><td class="odds-med">Medium</td><td>Uncapped growth</td><td>2nd surgeon delivers solo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">Implanted Wisdom · Confidential — Internal Use Only</div>
+</div>
+
+<script>
+function show(i){
+  document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  document.querySelectorAll('.panel').forEach((p,idx)=>p.classList.toggle('active',idx===i));
+}
+</script>
+</body>
+</html>
